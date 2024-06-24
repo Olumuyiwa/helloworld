@@ -59,7 +59,7 @@ jobs:
 
       - name: Configure kubectl
         run: |
-          gcloud container clusters get-credentials hello-world-cluster --zone us-central1-a
+          gcloud container clusters get-credentials staging-autopilot-cluster --zone us-west1-a
 
       - name: Deploy to GKE
         run: |
