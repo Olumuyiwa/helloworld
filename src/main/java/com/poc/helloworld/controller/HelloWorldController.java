@@ -14,13 +14,13 @@ public class HelloWorldController {
 
     @Autowired
     private HelloWorldService helloWorldService;
-
+    //    /helloworld/greet
     @GetMapping(path = "/greet")
     public ResponseEntity<String> greetAsJson() {
         JSONObject jsonObject = helloWorldService.fetchRightGreeting();
         return ResponseEntity.ok(jsonObject.toString());
     }
-
+    //    /helloworld/sayhi
     @GetMapping(path = "/sayhi")
     public String greetAsString() {
         return helloWorldService.getTimeOfDay();

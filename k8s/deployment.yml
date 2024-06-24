@@ -1,19 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
+# Name of the deployment
 metadata:
   name: hello-world-deployment
 spec:
+  # Number of pod replicas
   replicas: 3
+  # Label selector to identify pods for this deployment
   selector:
     matchLabels:
       app: hello-world
   template:
     metadata:
       labels:
+        # Labels applied to pods created by this deployment
         app: hello-world
     spec:
       containers:
+        # Container name
         - name: hello-world
-          image: your-dockerhub-username/helloworld:latest
+          # Docker image to use
+          image: moyewah/helloworld:latest
           ports:
+            # Port that the container exposes
             - containerPort: 8080
+#        imagePullSecrets:
+#          # Reference to the Docker registry secret
+#          - name: myregistrykey
