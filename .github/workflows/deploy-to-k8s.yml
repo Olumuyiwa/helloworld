@@ -1,103 +1,71 @@
-name: Deploy to GKE
-# This is the trigger for the workflow
+name: Deploy to VM
+
 on:
   push:
     branches:
-      - deploy-to-k8s # Only trigger on pushes to the main branch
-
-env:
-  REGISTRY: ${{ secrets.DOCKER_HUB_USERNAME }}
+      - deploy-to-vm  # Trigger the workflow on pushes to the 'deploy-to-vm' branch
 
 jobs:
   build:
-    # This is the job name
-    runs-on: ubuntu-latest  # The job will run on the latest Ubuntu runner
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3   # Check out the repository code
+        uses: actions/checkout@v2  # Check out the repository code
 
-      - name: Set up gcloud auth
-
-        # Set up Google Cloud authentication
-        # Use the GCP service account key stored in GitHub secrets
-        uses: google-github-actions/auth@v1
-        with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
-
-      # Set up Java Development Kit version 17
-      # Specify the Java version
-      # Specify the JDK distribution
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v3  # Set up JDK 17 using the Temurin distribution
         with:
-          java-version: '17'
           distribution: 'temurin'
+          java-version: '17'
 
-      # Build the project using Maven
       - name: Build with Maven
-        run: mvn package
+        run: mvn clean package  # Build the project using Maven, producing the JAR file
 
-      # Set up Docker Buildx for building multi-platform Docker images
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+  test:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
+    needs: build  # This job depends on the build job
 
-      - name: Log in to Docker Hub
-        # Uses a pre-built GitHub Action to log in to Docker
-        uses: docker/login-action@v3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2  # Check out the repository code again
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3  # Set up JDK 17 using the Temurin distribution
         with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}      # Docker Hub username from GitHub secrets
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}  # Docker Hub token from GitHub secrets
+          distribution: 'temurin'
+          java-version: '17'
 
-      - name: Build and push Docker image
-        # Building and pushing the Docker image
-        # the name of the image is docker.io/myusername/helloworld
-        # the tag of the image is latest
-        run: |
-          docker build -t ${{ env.REGISTRY }}/helloworld:latest .  
-          docker push ${{ env.REGISTRY }}/helloworld:latest   
+      - name: Run tests with Maven
+        run: mvn test  # Run the tests using Maven
 
   deploy:
-    needs: build
-    runs-on: ubuntu-latest    # The job will run on the latest Ubuntu runner
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
+    needs: test  # This job depends on the test job
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3  # Check out the repository code
+        uses: actions/checkout@v2  # Check out the repository code again
 
-      - name: Set up gcloud auth
-        uses: google-github-actions/auth@v1
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3  # Set up JDK 17 using the Temurin distribution
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          distribution: 'temurin'
+          java-version: '17'
 
-      - name: Install gke-gcloud-auth-plugin
-        # Update the package list
-        # Install required packages
-        # Add Google Cloud SDK repository
-        # Add Google's apt key
-        # Update the package list again
-        # Install Google Cloud SDK and GKE auth plugin
-
+      - name: Prepare SSH key
         run: |
-          
-          sudo apt-get update            
-          sudo apt-get install -y apt-transport-https ca-certificates gnupg curl
-          echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-          curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
-          sudo apt-get update
-          sudo apt-get install -y google-cloud-sdk google-cloud-cli-gke-gcloud-auth-plugin
+          echo "${{ secrets.GCP_SSH_PRIVATE_KEY }}" > private_key.pem  # Write the SSH private key to a file
+          chmod 600 private_key.pem  # Change the file permissions to make it secure
 
-
-
-      # Configure kubectl to use the GKE cluster in the specified region
-      - name: Configure kubectl
+      - name: Copy JAR to VM
         run: |
-          gcloud container clusters get-credentials staging-autopilot-cluster --region us-west1
+          scp -o StrictHostKeyChecking=no -i private_key.pem target/*.jar ${{ secrets.GCP_SSH_USERNAME }}@${{ secrets.GCP_INSTANCE_IP }}:/home/${{ secrets.GCP_SSH_USERNAME }}/myapp/app.jar  # Copy the JAR file to the VM
 
-      # Deploying the Docker image to the Kubernetes cluster
-      # Apply the Kubernetes deployment configuration
-      - name: Deploy to GKE
+      - name: Deploy on VM
         run: |
-          
-          kubectl apply -f k8s/deployment.yml   
-          kubectl apply -f k8s/service.yml
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ${{ secrets.GCP_SSH_USERNAME }}@${{ secrets.GCP_INSTANCE_IP }} << 'EOF'
+            sudo apt-get update  # Update the package list on the VM
+            sudo apt-get install -y openjdk-17-jre-headless  # Install Java 17 runtime on the VM
+            nohup java -jar /home/${{ secrets.GCP_SSH_USERNAME }}/myapp/app.jar > /home/${{ secrets.GCP_SSH_USERNAME }}/myapp/app.log 2>&1 &  # Run the application in the background and redirect output to a log file
+          EOF

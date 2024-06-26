@@ -1,13 +1,13 @@
 name: Deploy to VM
-
+# This is the trigger for the workflow
 on:
   push:
     branches:
-      - deploy-to-vm
+      - deploy-to-vm  # Only trigger on pushes to the deploy-to-vm branch
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # The job will run on the latest Ubuntu runner
 
     steps:
       - name: Checkout code
