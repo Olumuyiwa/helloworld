@@ -3,7 +3,7 @@ name: Deploy to VM
 on:
   push:
     branches:
-      - deploy-vm
+      - deploy-to-vm
 
 jobs:
   build-and-deploy:
