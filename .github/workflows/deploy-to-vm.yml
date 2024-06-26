@@ -77,23 +77,23 @@ jobs:
             fi
 
             # Check if the application is running
-            if pgrep -f "hello-world.jar"; then
+            if pgrep -f "app.jar"; then
               # Stop the application
-              pkill -f "hello-world.jar"
+              pkill -f "app.jar"
               # Rename the current JAR file with timestamp and move to archive
               timestamp=\$(date +%Y%m%d%H%M%S)
-              mv /home/${{ secrets.GCP_SSH_USERNAME }}/myapp/live/hello-world.jar /home/${{ secrets.GCP_SSH_USERNAME }}/myapp/archive/hello-world_\$timestamp.jar
+              mv /home/${{ secrets.GCP_SSH_USERNAME }}/myapp/live/app.jar /home/${{ secrets.GCP_SSH_USERNAME }}/myapp/archive/app_\$timestamp.jar
             fi
 
             # Move the new JAR file to the live folder and rename it
-            mv /home/${{ secrets.GCP_SSH_USERNAME }}/myapp/app.jar /home/${{ secrets.GCP_SSH_USERNAME }}/myapp/live/hello-world.jar
+            mv /home/${{ secrets.GCP_SSH_USERNAME }}/myapp/app.jar /home/${{ secrets.GCP_SSH_USERNAME }}/myapp/live/app.jar
 
             # Start the application
-            nohup java -jar /home/${{ secrets.GCP_SSH_USERNAME }}/myapp/live/hello-world.jar > /home/${{ secrets.GCP_SSH_USERNAME }}/myapp/live/app.log 2>&1 &
+            nohup java -jar /home/${{ secrets.GCP_SSH_USERNAME }}/myapp/live/app.jar > /home/${{ secrets.GCP_SSH_USERNAME }}/myapp/live/app.log 2>&1 &
 
             # Check if the application is running
             sleep 10  # Wait for a few seconds to give the application time to start
-            if pgrep -f "hello-world.jar"; then
+            if pgrep -f "app.jar"; then
               echo "Application is running."
             else
               echo "Application failed to start."
