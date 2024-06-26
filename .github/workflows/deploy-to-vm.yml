@@ -58,6 +58,9 @@ jobs:
           echo "${{ secrets.GCP_SSH_PRIVATE_KEY }}" > private_key.pem  # Write the SSH private key to a file
           chmod 600 private_key.pem  # Change the file permissions to make it secure
 
+      - name: Verify target directory and JAR file
+        run: ls -l target  # Verify the contents of the target directory
+
       - name: Copy JAR to VM
         run: |
           scp -o StrictHostKeyChecking=no -i private_key.pem target/*.jar ${{ secrets.GCP_SSH_USERNAME }}@${{ secrets.GCP_INSTANCE_IP }}:/home/${{ secrets.GCP_SSH_USERNAME }}/myapp/app.jar  # Copy the JAR file to the VM
