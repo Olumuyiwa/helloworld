@@ -35,7 +35,7 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/hello-world .  # Build the Docker image
+          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/hello-world .  # Build the Docker image using the specified tag
           docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/hello-world  # Push the Docker image to Google Container Registry
 
       - name: Deploy to Cloud Run
@@ -44,6 +44,6 @@ jobs:
             --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/hello-world \
             --platform managed \
             --region us-central1 \
-            --allow-unauthenticated  # Deploy the Docker image to Google Cloud Run
+            --allow-unauthenticated  # Deploy the Docker image to Google Cloud Run, making the service publicly accessible
         env:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}  # Use the GCP project ID stored in secrets
