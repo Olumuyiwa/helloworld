@@ -38,7 +38,7 @@ jobs:
             containerregistry.googleapis.com  # Enable the necessary APIs for Cloud Run, Cloud Build, and Container Registry
 
       - name: Configure Docker for Google Container Registry
-        run: gcloud auth configure-docker  # Configure Docker to use Google Container Registry (GCR)
+        run: gcloud auth configure-docker  # Configure Docker to use Google Container Registry
 
       - name: Build and push Docker image
         run: |
