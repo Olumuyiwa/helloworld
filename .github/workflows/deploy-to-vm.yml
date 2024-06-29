@@ -27,7 +27,7 @@ jobs:
 
       - name: Prepare SSH key
         run: |
-          echo "${{ secrets.GCP_SSH_VM_PRIVATE_KEY }}" > private_key.pem
+          echo "${{ secrets.GCP_SSH_PRIVATE_KEY }}" > private_key.pem
           chmod 600 private_key.pem
 
       - name: Copy JAR to VM
