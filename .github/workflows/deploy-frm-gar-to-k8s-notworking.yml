@@ -24,6 +24,12 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
+      - name: Log in to Google Container Registry
+        uses: google-github-actions/auth@v1  # Authenticate to Google Cloud using a service account key
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}  # Use the GCP service account key stored in secrets
+
+
       # Set up Java Development Kit version 17
       # Specify the Java version
       # Specify the JDK distribution
