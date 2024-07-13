@@ -3,7 +3,7 @@ name: Deploy to GKE
 on:
   push:
     branches:
-      - deploy-to-k8s # Only trigger on pushes to the deploy-to-k8s branch
+      - deploy-frm-dockerhub-to-k8s # Only trigger on pushes to the deploy-to-k8s branch
 
 env:
   REGISTRY: ${{ secrets.DOCKER_HUB_USERNAME }}
