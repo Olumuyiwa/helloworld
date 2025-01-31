@@ -38,6 +38,6 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no -i private_key.pem ${{ secrets.GCP_SSH_USERNAME }}@${{ secrets.GCP_INSTANCE_IP }} << 'EOF'
             sudo apt-get update
-            sudo apt-get install -y openjdk-21-jre-headless
+            sudo apt-get install -y openjdk-17-jre-headless
             nohup java -jar /home/${{ secrets.GCP_SSH_USERNAME }}/app.jar > app.log 2>&1 &
           EOF
