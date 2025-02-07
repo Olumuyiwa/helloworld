@@ -7,3 +7,9 @@
 3. It also demonstrates how to use Github actions for basic CI and CD activities.
 4. It also makes an attempt to push code to a docker registry
 5. It also shows how to make the application run in a Kubernetes cluster.
+6. maven commands 
+   ```maven
+      mvn clean build //clean and building 
+      mvn test 
+      mvn spring-boot:run
+   ```
