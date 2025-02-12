@@ -36,4 +36,9 @@ public class HelloWorldController {
         logger.info("greetAsString request received at '{}'.", new Date());
         return helloWorldService.getTimeOfDay();
     }
+    @GetMapping(path = "/blank")
+    public String blank() {
+        logger.info("blank '{}'.", new Date());
+        return "Blank - " + helloWorldService.getTimeOfDay();
+    }
 }
