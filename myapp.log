@@ -1,0 +1,43 @@
+deploy2025-02-09 23:21:14 - Starting HelloworldApplication using Java 17.0.10 with PID 82171 (/Users/ofoloru1/Documents/work-area/src-code/play/java/helloworld/target/classes started by ofoloru1 in /Users/ofoloru1/Documents/work-area/src-code/play/java/helloworld)
+2025-02-09 23:21:14 - No active profile set, falling back to 1 default profile: "default"
+2025-02-09 23:21:14 - Tomcat initialized with port 8080 (http)
+2025-02-09 23:21:14 - Starting service [Tomcat]
+2025-02-09 23:21:14 - Starting Servlet engine: [Apache Tomcat/10.1.26]
+2025-02-09 23:21:14 - Initializing Spring embedded WebApplicationContext
+2025-02-09 23:21:14 - Root WebApplicationContext: initialization completed in 366 ms
+2025-02-09 23:21:15 - Exposing 15 endpoints beneath base path '/actuator'
+2025-02-09 23:21:15 - Tomcat started on port 8080 (http) with context path '/'
+2025-02-09 23:21:15 - Started HelloworldApplication in 1.046 seconds (process running for 1.162)
+2025-02-09 23:22:48 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-02-09 23:22:48 - Initializing Servlet 'dispatcherServlet'
+2025-02-09 23:22:48 - Completed initialization in 47 ms
+2025-02-09 23:23:19 - greetAsJson request received at 'Sun Feb 09 23:23:19 GMT 2025'
+2025-02-09 23:23:36 - greetAsString request received at 'Sun Feb 09 23:23:36 GMT 2025'.
+2025-02-09 23:23:50 - Starting HelloworldApplication using Java 17.0.10 with PID 85346 (/Users/ofoloru1/Documents/work-area/src-code/play/java/helloworld/target/classes started by ofoloru1 in /Users/ofoloru1/Documents/work-area/src-code/play/java/helloworld)
+2025-02-09 23:23:50 - No active profile set, falling back to 1 default profile: "default"
+2025-02-09 23:23:50 - Tomcat initialized with port 8080 (http)
+2025-02-09 23:23:50 - Starting service [Tomcat]
+2025-02-09 23:23:50 - Starting Servlet engine: [Apache Tomcat/10.1.26]
+2025-02-09 23:23:50 - Initializing Spring embedded WebApplicationContext
+2025-02-09 23:23:50 - Root WebApplicationContext: initialization completed in 389 ms
+2025-02-09 23:23:51 - Exposing 15 endpoints beneath base path '/actuator'
+2025-02-09 23:23:51 - Tomcat started on port 8080 (http) with context path '/'
+2025-02-09 23:23:51 - Started HelloworldApplication in 1.332 seconds (process running for 1.448)
+2025-02-09 23:25:09 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-02-09 23:25:09 - Initializing Servlet 'dispatcherServlet'
+2025-02-09 23:25:09 - Completed initialization in 8 ms
+2025-02-09 23:25:09 - blank 'Sun Feb 09 23:25:09 GMT 2025'.
+2025-02-09 23:25:23 - Starting HelloworldApplication using Java 17.0.10 with PID 87224 (/Users/ofoloru1/Documents/work-area/src-code/play/java/helloworld/target/classes started by ofoloru1 in /Users/ofoloru1/Documents/work-area/src-code/play/java/helloworld)
+2025-02-09 23:25:23 - No active profile set, falling back to 1 default profile: "default"
+2025-02-09 23:25:23 - Tomcat initialized with port 8080 (http)
+2025-02-09 23:25:23 - Starting service [Tomcat]
+2025-02-09 23:25:23 - Starting Servlet engine: [Apache Tomcat/10.1.26]
+2025-02-09 23:25:23 - Initializing Spring embedded WebApplicationContext
+2025-02-09 23:25:23 - Root WebApplicationContext: initialization completed in 353 ms
+2025-02-09 23:25:23 - Exposing 15 endpoints beneath base path '/actuator'
+2025-02-09 23:25:23 - Tomcat started on port 8080 (http) with context path '/'
+2025-02-09 23:25:23 - Started HelloworldApplication in 0.718 seconds (process running for 0.821)
+2025-02-09 23:25:30 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-02-09 23:25:30 - Initializing Servlet 'dispatcherServlet'
+2025-02-09 23:25:30 - Completed initialization in 1 ms
+2025-02-09 23:25:30 - blank 'Sun Feb 09 23:25:30 GMT 2025'.
