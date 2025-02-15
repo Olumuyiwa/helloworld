@@ -56,4 +56,66 @@
 17. (Alternatively) Deploy the app as a function to Cloud Functions (without Docker).
 18. Test the deployed application using the URL provided by Cloud Run or Cloud Functions.
 19. Configure a custom domain and HTTPS for the Cloud Run or Cloud Functions endpoint (optional).
-20. Monitor the application using GCP's monitoring tools (optional).  
+20. Monitor the application using GCP's monitoring tools (optional).
+
+
+## How to add to the permissions of a service account 
+
+### List of roles for a service account to push to a cloud run 
+- Artifact Registry Repository Administrator
+- Cloud Build Editor
+- Cloud Run Admin
+- Service Account User
+- Service Usage Admin
+- Storage Admin
+- Artifact Registry Create-on-Push Writer
+
+Once deployed, an endpoint is shown e.g. https://hello-world-54738136311.us-central1.run.app
+
+https://hello-world-54738136311.us-central1.run.app | http://localhost:8080
+
+https://hello-world-54738136311.us-central1.run.app/helloworld/blank | http://localhost:8080/helloworld/blank
+
+
+It looks like the service account `cloud-run-deployment@***.iam.gserviceaccount.com` doesn't have the required permissions to enable the Google Cloud services you're trying to access, such as `cloud-run-deployment`, `cloudbuild`, and `containerregistry`. To resolve this issue, follow these steps:
+
+1. **Grant permissions to the service account**:
+   Ensure that the service account has the necessary roles assigned to enable and use the required services. You will likely need to assign roles like:
+   - `roles/serviceusage.serviceUsageAdmin` (to enable services),
+   - `roles/iam.serviceAccountUser` (to interact with service accounts),
+   - `roles/storage.admin` (to use Cloud Storage and Container Registry),
+   - `roles/cloudbuild.builds.editor` (to work with Cloud Build).
+
+   You can grant these roles via the Google Cloud Console or using `gcloud`:
+
+   ```bash
+   gcloud projects add-iam-policy-binding [YOUR_PROJECT_ID] \
+     --member "serviceAccount:cloud-run-deployment@***.iam.gserviceaccount.com" \
+     --role "roles/serviceusage.serviceUsageAdmin"
+   
+   gcloud projects add-iam-policy-binding [YOUR_PROJECT_ID] \
+     --member "serviceAccount:cloud-run-deployment@***.iam.gserviceaccount.com" \
+     --role "roles/iam.serviceAccountUser"
+   
+   gcloud projects add-iam-policy-binding [YOUR_PROJECT_ID] \
+     --member "serviceAccount:cloud-run-deployment@***.iam.gserviceaccount.com" \
+     --role "roles/storage.admin"
+   
+   gcloud projects add-iam-policy-binding [YOUR_PROJECT_ID] \
+     --member "serviceAccount:cloud-run-deployment@***.iam.gserviceaccount.com" \
+     --role "roles/cloudbuild.builds.editor"
+   ```
+
+2. **Check for project permissions**:
+   Ensure that the service account has the required permissions for the project itself, and that the project exists and is not archived or restricted.
+
+3. **Enable the necessary services manually**:
+   If you are still unable to enable the services, you can try enabling them manually through the Google Cloud Console:
+   - Go to the [API & Services Dashboard](https://console.cloud.google.com/apis/dashboard) in your Google Cloud project.
+   - Search for `Cloud Run`, `Cloud Build`, and `Container Registry`.
+   - Enable these services if they are not already enabled.
+
+4. **Ensure billing is enabled**:
+   Make sure that billing is enabled for the project if required by any of these services.
+
+Once you have verified and granted the required permissions, you should be able to enable the services successfully. Let me know if you need further assistance!
